@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TUNEC-TOOLS 🍣</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-indigo-100 to-pink-100 min-h-screen flex flex-col">
+
+<header class="bg-white shadow-md py-6">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+        <h1 class="text-4xl font-extrabold text-indigo-700">Парсер by uruma 🍱</h1>
+        <p class="text-gray-600 mt-2">Вставьте ссылку на страницу с роллами, чтобы получить список товаров</p>
+    </div>
+</header>
+
+<main class="flex-grow flex items-center justify-center p-6">
+    <div class="max-w-lg w-full bg-white p-8 rounded-3xl shadow-2xl">
+        <form method="POST" action="/" class="flex flex-col gap-5">
+            <input type="url" name="url" placeholder="Вставьте ссылку" required
+                   class="border border-gray-300 rounded-lg p-4 text-lg focus:outline-none focus:ring-2 focus:ring-indigo-400">
+            <button type="submit"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg py-3 transition duration-300 ease-in-out transform hover:scale-105">
+                Спарсить 🍣
+            </button>
+        </form>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="mt-6 space-y-3">
+            {% for category, message in messages %}
+            <div class="p-4 rounded-lg text-white {% if category == 'error' %}bg-red-500{% else %}bg-green-500{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+    </div>
+</main>
+
+<footer class="bg-white text-center py-4 shadow-inner">
+    <p class="text-sm text-gray-500">© 2025 Парсер by uruma. Все права не защищены, пользуемся на халяву.</p>
+</footer>
+</body>
+</html>
