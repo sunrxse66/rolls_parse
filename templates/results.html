@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результаты парсинга</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-indigo-100 to-pink-100 min-h-screen flex flex-col">
+
+<header class="bg-white shadow-md py-6">
+    <div class="max-w-6xl mx-auto px-4 text-center">
+        <h1 class="text-3xl font-extrabold text-indigo-700">Результаты парсинга 🍱</h1>
+        <p class="text-gray-600 mt-2">Ниже приведены товары, найденные на указанной странице</p>
+    </div>
+</header>
+
+<main class="flex-grow p-6 max-w-7xl mx-auto">
+    <div class="overflow-x-auto bg-white shadow-lg rounded-2xl p-6">
+        <table class="min-w-full divide-y divide-gray-200 rounded-t-xl">
+            <thead class="bg-indigo-600 text-white rounded-t-xl">
+                <tr>
+                    <th class="px-4 py-3 text-left text-sm font-semibold rounded-tl-xl">Фото</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold">Название</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold">Описание</th>
+                    <th class="px-4 py-3 text-center text-sm font-semibold">Цена (оригинал)</th>
+                    <th class="px-4 py-3 text-center text-sm font-semibold rounded-tr-xl">Цена (+20%)</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                {% for item in rolls %}
+                <tr class="hover:bg-indigo-50 transition">
+                    <td class="px-4 py-3">
+                        {% if item.image_url %}
+                            <img src="{{ item.image_url }}" alt="{{ item.name }}"
+                                 class="w-20 h-20 object-cover rounded-lg shadow-sm">
+                        {% else %}
+                            <span class="text-gray-400 text-sm">Нет фото</span>
+                        {% endif %}
+                    </td>
+                    <td class="px-4 py-3 font-semibold text-indigo-700">{{ item.name }}</td>
+                    <td class="px-4 py-3 text-gray-600">{{ item.description }}</td>
+                    <td class="px-4 py-3 text-center text-gray-500">{{ item.original_price }}₽</td>
+                    <td class="px-4 py-3 text-center font-semibold text-green-600">{{ item.new_price }}₽</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="flex flex-wrap justify-center gap-4 mt-8">
+        <form method="POST" action="/download/excel">
+            <input type="hidden" name="data" value='{{ rolls|tojson }}'>
+            <button type="submit"
+                    class="bg-green-600 hover:bg-green-700 text-white rounded-xl p-3 font-semibold transition transform hover:scale-105">
+                Скачать Excel
+            </button>
+        </form>
+        <form method="POST" action="/download/txt">
+            <input type="hidden" name="data" value='{{ rolls|tojson }}'>
+            <button type="submit"
+                    class="bg-blue-600 hover:bg-blue-700 text-white rounded-xl p-3 font-semibold transition transform hover:scale-105">
+                Скачать TXT
+            </button>
+        </form>
+        <a href="/"
+           class="bg-gray-500 hover:bg-gray-600 text-white rounded-xl p-3 font-semibold transition transform hover:scale-105">
+            Назад
+        </a>
+    </div>
+</main>
+
+<footer class="bg-white text-center py-4 shadow-inner mt-10">
+    <p class="text-sm text-gray-500">© 2025 Парсер by uruma. Все права не защищены, пользуемся на халяву.</p>
+</footer>
+</body>
+</html>
